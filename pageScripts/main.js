@@ -122,7 +122,10 @@ let ajax_interceptor_qoweifjqon = {
           }
         }
         // 没有返回不替换
-        this.responseText = overrideResponse !== undefined ? overrideResponse : this.responseText
+        // When responseType is 'json', responseText is not accessible, so we only set response
+        if (this.responseType === '' || this.responseType === 'text') {
+          this.responseText = overrideResponse !== undefined ? overrideResponse : this.responseText
+        }
         this.response = overrideResponse !== undefined ? overrideResponse : this.response
         this.status = overrideStatus !== undefined ? overrideStatus : this.status
         this.statusText = overrideStatusText !== undefined ? overrideStatusText : this.statusText
@@ -482,8 +485,8 @@ window.addEventListener("message", function (event) {
   if (ajax_interceptor_qoweifjqon.settings.ajaxInterceptor_switchOn) {
     // https://github.com/YGYOOO/ajax-interceptor/issues/78
     // https://github.com/YGYOOO/ajax-interceptor/issues/93
-    for (const k in ajax_tools_space.originalXHR) {
-      ajax_tools_space.myXHR[k] = ajax_tools_space.originalXHR[k]
+    for (const k in ajax_interceptor_qoweifjqon.originalXHR) {
+      ajax_interceptor_qoweifjqon.myXHR[k] = ajax_interceptor_qoweifjqon.originalXHR[k]
     }
     window.XMLHttpRequest = ajax_interceptor_qoweifjqon.myXHR
     window.fetch = ajax_interceptor_qoweifjqon.myFetch
